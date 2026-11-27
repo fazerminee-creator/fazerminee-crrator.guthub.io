@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Веб-разработчик Альмир | Создание сайтов</title>
+  
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" type="image/png">
+  <meta name="theme-color" content="#0a0a0a">
+  
+  <style>
+    /* --- БАЗОВЫЕ НАСТРОЙКИ --- */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #0a0a0a 70%);
+      scroll-behavior: smooth;
+    }
+    
+    /* --- ЖИВОЙ ФОН --- */
+    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.3; }
+
+    /* --- НАВИГАЦИЯ --- */
+    .navbar {
+      position: sticky; top: 10px; z-index: 1000;
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 12px;
+      background: rgba(20, 20, 20, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.05); border-radius: 30px; 
+      width: fit-content; margin: 10px auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .navbar a {
+      color: #ccc; text-decoration: none; font-size: 13px; font-weight: 600;
+      padding: 6px 14px; border-radius: 20px; transition: 0.3s; text-transform: uppercase;
+    }
+    .navbar a:hover { color: #fff; background: rgba(255, 102, 0, 0.2); }
+
+    /* --- ГЛАВНЫЙ ЭКРАН --- */
+    .hero {
+      min-height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 40px 20px; text-align: center;
+    }
+    h1 { 
+      font-family: 'Georgia', serif; font-size: 38px; 
+      background: linear-gradient(90deg, #ff6600, #ff0065, #ff6600); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 20px; line-height: 1.2; letter-spacing: 1px;
+    }
+    .hero p { font-size: 18px; color: #aaa; max-width: 600px; margin-bottom: 30px; }
+
+    /* --- КНОПКИ --- */
+    .btn {
+      display: inline-block; background: linear-gradient(135deg, #ff6600, #ff0065); color: white;
+      padding: 15px 35px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 16px;
+      border: none; cursor: pointer; box-shadow: 0 10px 20px rgba(255, 102, 0, 0.3); transition: 0.3s; margin: 10px;
+    }
+    .btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 15px 25px rgba(255, 102, 0, 0.5); }
+    .btn-outline { background: transparent; border: 2px solid #ff6600; color: #ff6600; }
+    .btn-outline:hover { background: #ff6600; color: white; }
+
+    /* --- СЕКЦИИ --- */
+    .section { padding: 70px 20px; text-align: center; position: relative; }
+    .section h2 { 
+      font-family: 'Georgia', serif; font-size: 32px; color: #fff; margin-bottom: 40px; 
+      position: relative; display: inline-block;
+    }
+    .section h2::after {
+      content: ''; position: absolute; width: 50%; height: 2px; background: #ff6600;
+      bottom: -10px; left: 25%; border-radius: 2px;
+    }
+
+    /* --- УСЛУГИ --- */
+    .services-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 900px; margin: 0 auto; }
+    .service-card {
+      background: rgba(30, 30, 30, 0.6); border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px; padding: 30px; width: 100%; max-width: 280px; transition: 0.3s;
+    }
+    .service-card:hover { transform: translateY(-5px); border-color: #ff6600; box-shadow: 0 10px 20px rgba(255,102,0,0.1); }
+    .service-card h3 { color: #fff; margin-bottom: 10px; }
+    .service-card p { color: #888; font-size: 14px; margin-bottom: 20px; }
+    .price { font-size: 22px; color: #ff6600; font-weight: bold; }
+
+    /* --- ПОЧЕМУ Я --- */
+    .features { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 900px; margin: 0 auto; }
+    .feature { background: rgba(30,30,30,0.4); padding: 20px; border-radius: 15px; width: 200px; border: 1px solid #333; }
+    .feature h4 { color: #ff6600; margin-bottom: 10px; }
+    .feature p { font-size: 13px; color: #aaa; }
+
+    /* --- РАБОТЫ --- */
+    .works-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 25px; max-width: 900px; margin: 0 auto; }
+    .work-card {
+      background: rgba(30, 30, 30, 0.8); border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px; padding: 30px; width: 100%; max-width: 350px; text-align: left; transition: 0.3s;
+    }
+    .work-card:hover { border-color: #ff6600; transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
+    .work-card h3 { color: #fff; margin-bottom: 15px; font-size: 20px; }
+    .work-card p { font-size: 14px; color: #888; margin-bottom: 20px; }
+    .work-card a { color: #ff6600; text-decoration: none; font-weight: bold; font-size: 15px; display: inline-block; }
+
+    /* --- ЭТАПЫ --- */
+    .steps { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 900px; margin: 0 auto; }
+    .step { background: rgba(30,30,30,0.6); padding: 25px; border-radius: 15px; width: 200px; border: 1px solid #333; }
+    .step-num { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; background: #ff6600; color: white; border-radius: 50%; font-weight: bold; font-size: 18px; margin-bottom: 15px; }
+    .step h4 { color: #fff; margin-bottom: 10px; }
+    .step p { font-size: 13px; color: #888; }
+
+    /* --- ОТЗЫВЫ --- */
+    .review { background: rgba(30, 30, 30, 0.6); border-left: 4px solid #ff6600; padding: 25px; margin: 15px auto; max-width: 600px; text-align: left; border-radius: 0 15px 15px 0; }
+    .review p { font-style: italic; color: #ddd; margin-bottom: 15px; }
+    .review span { font-size: 14px; color: #ff6600; font-weight: bold; }
+
+    /* --- FAQ --- */
+    .faq-item { background: rgba(30,30,30,0.6); border: 1px solid #333; border-radius: 15px; margin: 10px auto; max-width: 600px; overflow: hidden; text-align: left; }
+    .faq-q { padding: 20px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; color: #eee; }
+    .faq-a { padding: 0 20px; max-height: 0; overflow: hidden; transition: all 0.3s ease; color: #999; font-size: 14px; }
+    .faq-item.active .faq-a { max-height: 200px; padding-bottom: 20px; }
+
+    /* --- БЕГУЩАЯ СТРОКА --- */
+    .ticker-wrap { width: 100%; overflow: hidden; background: #ff6600; color: white; padding: 10px 0; margin: 40px 0; }
+    .ticker { display: inline-block; white-space: nowrap; animation: ticker 20s linear infinite; font-weight: bold; font-size: 14px; }
+    @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+    /* --- КОНТАКТЫ --- */
+    .contact-box { background: rgba(30,30,30,0.8); padding: 40px 20px; border-radius: 20px; max-width: 500px; margin: 0 auto; }
+
+    /* --- КНОПКА НАВЕРХ --- */
+    .up-btn { position: fixed; bottom: 30px; right: 30px; background: #ff6600; color: white; width: 50px; height: 50px; border-radius: 50%; text-decoration: none; font-size: 24px; line-height: 50px; text-align: center; font-weight: bold; z-index: 100; transition: 0.3s; }
+    .up-btn:hover { background: #ff0065; transform: translateY(-5px); }
+
+    /* --- КНОПКА WHATSAPP --- */
+    .float-wa { position: fixed; bottom: 30px; left: 30px; background: #25D366; color: white; width: 55px; height: 55px; border-radius: 50%; text-decoration: none; font-size: 28px; line-height: 55px; text-align: center; z-index: 100; transition: all 0.3s; animation: pulse-wa 2.5s infinite; }
+    @keyframes pulse-wa { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5); } 70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }
+
+    /* --- АНИМАЦИЯ --- */
+    .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    /* --- АДАПТИВНОСТЬ --- */
+    @media (max-width: 768px) {
+      h1 { font-size: 28px; }
+      .navbar { gap: 5px; padding: 10px; }
+      .navbar a { font-size: 10px; padding: 4px 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Фон -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Меню -->
+  <nav class="navbar">
+    <a href="#services">Услуги</a>
+    <a href="#works">Работы</a>
+    <a href="#steps">Этапы</a>
+    <a href="#reviews">Отзывы</a>
+    <a href="#contact">Контакты</a>
+  </nav>
+
+  <!-- Главный экран -->
+  <header class="hero reveal">
+    <h1>Создаю сайты для вашего бизнеса</h1>
+    <p>Меня зовут Альмир. Я делаю современные, удобные и недорогие сайты-визитки для мастеров и небольших бизнесов.</p>
+    <a href="https://t.me/dnoek?text=Здравствуйте,%20Альмир!%20Хочу%20заказать%20сайт." class="btn" target="_blank">Написать в Telegram</a>
+  </header>
+
+  <!-- Услуги -->
+  <section id="services" class="section reveal">
+    <h2>Мои услуги</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>Сайт-визитка</h3>
+        <p>Одностраничный сайт с ценами и контактами</p>
+        <div class="price">Договорная</div>
+      </div>
+      <div class="service-card">
+        <h3>Лендинг</h3>
+        <p>Продающая страница для услуги</p>
+        <div class="price">Договорная</div>
+      </div>
+      <div class="service-card">
+        <h3>Доработка</h3>
+        <p>Правки вашего текущего сайта</p>
+        <div class="price">Договорная</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Почему я -->
+  <section class="section reveal">
+    <h2>Почему выбирают меня</h2>
+    <div class="features">
+      <div class="feature"><h4>Быстро</h4><p>Сайт за 1-2 дня</p></div>
+      <div class="feature"><h4>Под телефон</h4><p>Удобно смотреть с любого устройства</p></div>
+      <div class="feature"><h4>Недорого</h4><p>Цены ниже рыночных</p></div>
+    </div>
+  </section>
+
+  <!-- Работы -->
+  <section id="works" class="section reveal">
+    <h2>Мои работы</h2>
+    <div class="works-grid">
+      <div class="work-card">
+        <h3>Сайт для мастера маникюра</h3>
+        <p>Красивая визитка с ценами и кнопкой записи.</p>
+        <a href="https://t.me/dnoek?text=Здравствуйте,%20хочу%20посмотреть%20пример%20сайта%20для%20маникюра." target="_blank">Смотреть пример &rarr;</a>
+      </div>
+      <div class="work-card">
+        <h3>Сайт для репетитора</h3>
+        <p>Строгий дизайн, расписание занятий и форма записи.</p>
+        <a href="https://t.me/dnoek?text=Здравствуйте,%20хочу%20посмотреть%20пример%20сайта%20для%20репетитора." target="_blank">Смотреть пример &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Этапы -->
+  <section id="steps" class="section reveal">
+    <h2>Как я работаю</h2>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><h4>Заявка</h4><p>Вы пишете мне в Telegram</p></div>
+      <div class="step"><div class="step-num">2</div><h4>Дизайн</h4><p>Я делаю макет и верстку</p></div>
+      <div class="step"><div class="step-num">3</div><h4>Правки</h4><p>Вы смотрите и мы правим</p></div>
+      <div class="step"><div class="step-num">4</div><h4>Готово</h4><p>Сайт публикуется в интернете</p></div>
+    </div>
+  </section>
+
+  <!-- Бегущая строка -->
+  <div class="ticker-wrap">
+    <div class="ticker">⚡ Быстрое создание сайтов ⚡ Адаптивный дизайн ⚡ Приятные цены ⚡ Пишите в Telegram! ⚡</div>
+  </div>
+
+  <!-- Отзывы -->
+  <section id="reviews" class="section reveal">
+    <h2>Отзывы</h2>
+    <div class="review">
+      <p>"Сделал сайт за 1 день, всё понятно объяснил. Очень довольна результатом!"</p>
+      <span>— Анна, мастер маникюра</span>
+    </div>
+    <div class="review">
+      <p>"Быстро, недорого и красиво. Рекомендую!"</p>
+      <span>— Дмитрий, репетитор</span>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section reveal">
+    <h2>Частые вопросы</h2>
+    <div class="faq-item">
+      <div class="faq-q">Сколько стоит сайт? <span>+</span></div>
+      <div class="faq-a">Цена обсуждается индивидуально, в зависимости от ваших пожеланий.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Как происходит оплата? <span>+</span></div>
+      <div class="faq-a">50% предоплата, остальное — после того, как вы увидите готовый сайт.</div>
+    </div>
+  </section>
+
+  <!-- Контакты -->
+  <section id="contact" class="section reveal">
+    <h2>Обсудим проект?</h2>
+    <div class="contact-box">
+      <p>Нажмите на кнопку, чтобы написать мне в Telegram или позвонить.</p>
+      <a href="https://t.me/dnoek?text=Здравствуйте,%20Альмир!%20Хочу%20заказать%20сайт." class="btn" target="_blank">Написать в Telegram</a>
+      <a href="tel:+79393188966" class="btn btn-outline">+7 (939) 318-89-66</a>
+    </div>
+  </section>
+
+  <!-- Кнопки -->
+  <a href="#" class="up-btn" title="Наверх">↑</a>
+  <a href="https://wa.me/79393188966?text=Здравствуйте,%20Альмир!" class="float-wa" target="_blank" title="WhatsApp">💬</a>
+
+  <script>
+    // 1. ФОН (ЧАСТИЦЫ)
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
+    for (let i = 0; i < 50; i++) {
+      particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, radius: Math.random() * 2, speedX: (Math.random() - 0.5) * 0.5, speedY: (Math.random() - 0.5) * 0.5 });
+    }
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ff6600';
+      particles.forEach(p => {
+        p.x += p.speedX; p.y += p.speedY;
+        if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2); ctx.fill();
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // 2. АНИМАЦИЯ ПОЯВЛЕНИЯ
+    function reveal() {
+      var reveals = document.querySelectorAll(".reveal");
+      for (var i = 0; i < reveals.length; i++) {
+        var windowHeight = window.innerHeight;
+        var elementTop = reveals[i].getBoundingClientRect().top;
+        if (elementTop < windowHeight - 100) reveals[i].classList.add("active");
+      }
+    }
+    window.addEventListener("scroll", reveal);
+    reveal();
+
+    // 3. FAQ
+    document.querySelectorAll('.faq-q').forEach(item => {
+      item.addEventListener('click', () => {
+        const parent = item.parentElement;
+        parent.classList.toggle('active');
+        const span = item.querySelector('span');
+        span.textContent = parent.classList.contains('active') ? '-' : '+';
+      });
+    });
+  </script>
+</body>
+</html>
